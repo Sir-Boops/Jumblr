@@ -70,7 +70,7 @@ public class BlogInfo {
 	private int tumblr_queue;
 	
 	//Define private Tumblr Longs
-	private Long tumblr_blog_last_active;
+	private long tumblr_blog_last_active;
 	
 	//Define private Tumblr lists
 	private JSONArray tumblr_submit_accepted_types;
@@ -219,7 +219,7 @@ public class BlogInfo {
 	}
 	
 	//Return Tumblr Longs
-	public Long getLastActive(){
+	public long getLastActive(){
 		return this.tumblr_blog_last_active;
 	}
 	
