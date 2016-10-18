@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>me.boops.boops_jumblr</groupId>
-    <artifactId>Boops_Jumblr</artifactId>
-    <version>0.0.1</version>
-    <name>Boops_Jumblr</name>
+    <groupId>pw.frgl.jumblr</groupId>
+    <artifactId>Jumblr</artifactId>
+    <version>-SNAPSHOT</version>
+    <name>Jumblr</name>
 
     <dependencies>
         <dependency>
@@ -48,7 +48,7 @@
                             </artifactSet>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>me.boops.boops_jumblr.Main</mainClass>
+                                    <mainClass>pw.frgl.jumblr.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

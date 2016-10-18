@@ -1,4 +1,4 @@
-package me.boops.boops_jumblr;
+package pw.frgl.jumblr;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
-public class BlogPosts {
+public class BlogDrafts {
 	
 	// Define private oauth strings
 	private String cust_key;
@@ -21,26 +21,18 @@ public class BlogPosts {
 	private String token;
 	private String token_sec;
 	
-	//Define private optional settings
-	private String set_post_type = "";
-	private int set_post_id = -1;
-	private String set_post_tag = "";
-	private int set_limit = -1;
-	private int set_offset = -1;
-	private boolean set_reblog_info = false;
-	private boolean set_notes_info = false;
+	//Define private post request settings
+	private int set_before_id = -1;
 	private String set_filter = "";
-	
-	//Define Tumblr Reponses
-	private int tumblr_total_posts;
-	private int tumblr_res_posts;
-	private JSONArray tumblr_posts;
 	
 	// Define private HTTP strings
 	private int httprescode;
 
 	// Define JSON dump
 	private String json_dump;
+	
+	//Define posts
+	private JSONArray tumblr_posts;
 	
 	//Return HTTP code
 	public int getHTTPCode(){
@@ -52,54 +44,26 @@ public class BlogPosts {
 		return this.json_dump;
 	}
 	
-	//Return Tumblr Reponses
-	public int getTotalPosts(){
-		return this.tumblr_total_posts;
-	}
-	
-	public int getResPosts(){
-		return this.tumblr_res_posts;
-	}
-	
+	//Return the JSON of a post to be decoded
 	public String getPost(int post){
 		return this.tumblr_posts.getJSONObject(post).toString();
 	}
 	
-	//Set the optional Settings
-	public void setPostType(String type){
-		this.set_post_type = type;
+	public int getResPostCount(){
+		return this.tumblr_posts.length();
 	}
 	
-	public void setPostID(int id){
-		this.set_post_id = id;
+	//Set the request settings
+	public void setBeforeID(int before){
+		this.set_before_id = before;
 	}
 	
-	public void setPostTag(String tag){
-		this.set_post_tag = tag;
-	}
-	
-	public void setLimit(int limit){
-		this.set_limit = limit;
-	}
-	
-	public void setOffset(int offset){
-		this.set_offset = offset;
-	}
-	
-	public void setShowReblogInfo(boolean ans){
-		this.set_reblog_info = ans;
-	}
-	
-	public void setShowNotesInfo(boolean ans){
-		this.set_notes_info = ans;
-	}
-	
-	public void setPostFilter(String filter){
+	public void setFilter(String filter){
 		this.set_filter = filter;
 	}
 	
 	// Master call that sets the needed api keys
-	public BlogPosts(String cust_key, String cust_sec, String token, String token_sec) {
+	public BlogDrafts(String cust_key, String cust_sec, String token, String token_sec) {
 
 		// Set the required oauth strings
 		this.cust_key = cust_key;
@@ -109,42 +73,17 @@ public class BlogPosts {
 
 	}
 	
-	public void getPosts(String blog){
+	public void getQueue(String blog){
 		
 		// Define oauth
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
 		consumer.setTokenWithSecret(this.token, this.token_sec);
 				
 		//Create The URL
-		String url = "https://api.tumblr.com/v2/blog/" + blog + "/posts";
+		String url = "https://api.tumblr.com/v2/blog/" + blog + "/posts/draft";
 		
-		//Add options if they are set
-		if(!this.set_post_type.isEmpty()){
-			url += "?type=" + this.set_post_type;
-		}
-		
-		if(this.set_post_id >= 0){
-			url += "?id=" + this.set_post_id;
-		}
-		
-		if(!this.set_post_tag.isEmpty()){
-			url += "?tag=" + this.set_post_tag;
-		}
-		
-		if(this.set_limit >= 0){
-			url += "?limit=" + this.set_limit;
-		}
-		
-		if(this.set_offset >= 0){
-			url += "?offset=" + this.set_offset;
-		}
-		
-		if(this.set_reblog_info){
-			url += "?reblog_info=true";
-		}
-		
-		if(this.set_notes_info){
-			url += "?notes_info=true";
+		if(this.set_before_id >= 0){
+			url += "?before_id=" + this.set_before_id;
 		}
 		
 		if(!this.set_filter.isEmpty()){
@@ -172,13 +111,11 @@ public class BlogPosts {
 				String meta = new BasicResponseHandler().handleResponse(res);
 				JSONObject json = new JSONObject(meta);
 				
+				//Set the json array off to the private string
+				this.tumblr_posts = json.getJSONObject("response").getJSONArray("posts");
+				
 				//Dump Json
 				this.json_dump = json.toString();
-				
-				//Set the responce into the private area
-				this.tumblr_total_posts = json.getJSONObject("response").getInt("total_posts");
-				this.tumblr_res_posts = json.getJSONObject("response").getJSONArray("posts").length();
-				this.tumblr_posts = json.getJSONObject("response").getJSONArray("posts");
 
 			} else {
 
@@ -196,4 +133,5 @@ public class BlogPosts {
 		}
 		
 	}
+
 }
