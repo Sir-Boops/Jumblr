@@ -1,2 +1,7 @@
 Jumblr - 1.0.2
   * Fixed the pom.xml file for deploying
+  * Added a null check to getPost(int)
+  * Changed post IDs to be longs in blogposts
+  * Added a null check in decode post
+  * Added list clearing in decode post
+  * Added getPostType to decode post

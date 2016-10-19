@@ -23,7 +23,7 @@ public class BlogPosts {
 	
 	//Define private optional settings
 	private String set_post_type = "";
-	private int set_post_id = -1;
+	private long set_post_id = -1;
 	private String set_post_tag = "";
 	private int set_limit = -1;
 	private int set_offset = -1;
@@ -62,7 +62,12 @@ public class BlogPosts {
 	}
 	
 	public String getPost(int post){
-		return this.tumblr_posts.getJSONObject(post).toString();
+		//Check if it's null
+		if(this.tumblr_posts == null){
+			return null;
+		} else {
+			return this.tumblr_posts.getJSONObject(post).toString();
+		}
 	}
 	
 	//Set the optional Settings
@@ -70,7 +75,7 @@ public class BlogPosts {
 		this.set_post_type = type;
 	}
 	
-	public void setPostID(int id){
+	public void setPostID(long id){
 		this.set_post_id = id;
 	}
 	
