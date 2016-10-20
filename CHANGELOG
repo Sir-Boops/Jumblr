@@ -1,3 +1,7 @@
+Jumblr - 1.0.3
+  * Fixed servral null pointer in deocde post
+  * Added post rebloging/queuing
+
 Jumblr - 1.0.2
   * Fixed the pom.xml file for deploying
   * Added a null check to getPost(int)
