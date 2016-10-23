@@ -1,3 +1,6 @@
+Jumblr - 1.0.4
+  * Fixed a loop decode error in getBlogQueue
+
 Jumblr - 1.0.3
   * Fixed servral null pointer in deocde post
   * Added post rebloging/queuing

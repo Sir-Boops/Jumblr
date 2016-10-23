@@ -118,13 +118,20 @@ public class BlogQueue {
 
 				//Now parse the res
 				String meta = new BasicResponseHandler().handleResponse(res);
-				JSONObject json = new JSONObject(meta);
 				
-				//Set the json array off to the private string
-				this.tumblr_posts = json.getJSONObject("response").getJSONArray("posts");
-				
-				//Dump Json
-				this.json_dump = json.toString();
+				//Check if meta is JSON
+				if(meta.startsWith("{")){
+					
+					//Catch the error if their is one
+					JSONObject json = new JSONObject(meta);
+						
+					//Set the json array off to the private string
+					this.tumblr_posts = json.getJSONObject("response").getJSONArray("posts");
+						
+					//Dump Json
+					this.json_dump = json.toString();
+					
+				}
 
 			} else {
 
