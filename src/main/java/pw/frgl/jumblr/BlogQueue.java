@@ -35,6 +35,9 @@ public class BlogQueue {
 	//Define posts
 	private JSONArray tumblr_posts;
 	
+	//Define Error String
+	private String err = "";
+	
 	//Return HTTP code
 	public int getHTTPCode(){
 		return this.httprescode;
@@ -67,6 +70,11 @@ public class BlogQueue {
 		this.set_filter = filter;
 	}
 	
+	//Return Error
+	public String getError(){
+		return this.err;
+	}
+	
 	// Master call that sets the needed api keys
 	public BlogQueue(String cust_key, String cust_sec, String token, String token_sec) {
 
@@ -79,6 +87,9 @@ public class BlogQueue {
 	}
 	
 	public void getQueue(String blog){
+		
+		//Empty The Error
+		this.err = "";
 		
 		// Define oauth
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
@@ -131,6 +142,10 @@ public class BlogQueue {
 					//Dump Json
 					this.json_dump = json.toString();
 					
+				} else {
+					
+					//Meta Error
+					this.err = "Meta Error";
 				}
 
 			} else {
