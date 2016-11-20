@@ -538,7 +538,7 @@ public class DecodePost {
 				}
 			}
 			if (json.has("source_title")) {
-				this.tumblr_source_title = json.getString("source_title");
+				// this.tumblr_source_title = json.getString("source_title");
 			}
 			if (json.has("can_reblog")) {
 				this.tumblr_can_reblog = json.getBoolean("can_reblog");
@@ -568,7 +568,7 @@ public class DecodePost {
 			// Decode Trail vars
 			if (json.has("trail")) {
 				JSONArray trail = json.getJSONArray("trail");
-				if(!trail.isNull(0)){
+				if (!trail.isNull(0)) {
 					JSONObject trail_lower = trail.getJSONObject(0);
 					if (trail_lower.has("content_raw")) {
 						this.tumblr_trail_content_raw = trail_lower.getString("content_raw");
@@ -582,9 +582,9 @@ public class DecodePost {
 					if (trail_lower.has("content")) {
 						this.tumblr_trail_content = trail_lower.getString("content");
 					}
-					
+
 					// Set Blog Strings
-					if(trail_lower.has("blog")){
+					if (trail_lower.has("blog")) {
 						JSONObject blog = trail_lower.getJSONObject("blog");
 						if (blog.has("share_likes")) {
 							this.tumblr_trail_blog_share_likes = blog.getBoolean("share_likes");
@@ -602,22 +602,24 @@ public class DecodePost {
 							this.tumblr_trail_blog_share_following = blog.getBoolean("share_following");
 						}
 					}
-					
-					if(trail_lower.has("blog")){
+
+					if (trail_lower.has("blog")) {
 						JSONObject blog = trail_lower.getJSONObject("blog");
-						if(blog.has("theme")){
+						if (blog.has("theme")) {
 							// Set blog theme vars
-							try{
+							try {
 								JSONObject theme = blog.getJSONObject("theme");
-								
+
 								if (theme.has("header_focus_height")) {
-									this.tumblr_trail_blog_theme_header_focus_height = theme.getInt("header_focus_height");
+									this.tumblr_trail_blog_theme_header_focus_height = theme
+											.getInt("header_focus_height");
 								}
 								if (theme.has("header_image")) {
 									this.tumblr_trail_blog_theme_header_image = theme.getString("header_image");
 								}
 								if (theme.has("header_image_scaled")) {
-									this.tumblr_trail_blog_theme_header_image_focused = theme.getString("header_image_scaled");
+									this.tumblr_trail_blog_theme_header_image_focused = theme
+											.getString("header_image_scaled");
 								}
 								if (theme.has("show_description")) {
 									this.tumblr_trail_blog_theme_show_desc = theme.getBoolean("show_description");
@@ -629,7 +631,8 @@ public class DecodePost {
 									this.tumblr_trail_blog_theme_title_color = theme.getString("title_color");
 								}
 								if (theme.has("header_focus_width")) {
-									this.tumblr_trail_blog_theme_header_focus_width = theme.getInt("header_focus_width");
+									this.tumblr_trail_blog_theme_header_focus_width = theme
+											.getInt("header_focus_width");
 								}
 								if (theme.has("header_bounds")) {
 									this.tumblr_trail_blog_theme_header_bounds = theme.get("header_bounds").toString();
@@ -659,23 +662,26 @@ public class DecodePost {
 									this.tumblr_trail_blog_theme_show_avatar = theme.getBoolean("show_avatar");
 								}
 								if (theme.has("header_full_height")) {
-									this.tumblr_trail_blog_theme_header_full_height = theme.getInt("header_full_height");
+									this.tumblr_trail_blog_theme_header_full_height = theme
+											.getInt("header_full_height");
 								}
 								if (theme.has("header_stretch")) {
 									this.tumblr_trail_blog_theme_header_strech = theme.getBoolean("header_stretch");
 								}
 								if (theme.has("header_image_focused")) {
-									this.tumblr_trail_blog_theme_header_image_focused = theme.getString("header_image_focused");
+									this.tumblr_trail_blog_theme_header_image_focused = theme
+											.getString("header_image_focused");
 								}
 								if (theme.has("show_header_image")) {
-									this.tumblr_trail_blog_theme_show_header_image = theme.getBoolean("show_header_image");
+									this.tumblr_trail_blog_theme_show_header_image = theme
+											.getBoolean("show_header_image");
 								}
-							} catch(JSONException e){
-								
+							} catch (JSONException e) {
+
 							}
 						}
 					}
-					
+
 				}
 			}
 
@@ -716,7 +722,9 @@ public class DecodePost {
 
 			// Decode If Link
 			if (this.tumblr_type.toLowerCase().equals("link")) {
-				this.tumblr_link_title = json.getString("title");
+				if (json.has("title")) {
+					this.tumblr_link_title = json.getString("title");
+				}
 				this.tumblr_link_url = json.getString("url");
 				this.tumblr_link_excerpt = json.getString("excerpt");
 				this.tumblr_link_publisher = json.getString("publisher");
