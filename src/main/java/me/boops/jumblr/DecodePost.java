@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -686,31 +686,35 @@ public class DecodePost {
 			}
 
 			// Decode The Photos Feild
-			if (this.tumblr_type.toLowerCase().equals("photo")) {
+			if(json.has("photos")){
 				this.tumblr_photo_caption = json.getJSONArray("photos").getJSONObject(0).getString("caption");
-				this.tumblr_photo_org_width = json.getJSONArray("photos").getJSONObject(0)
-						.getJSONObject("original_size").getInt("width");
-				this.tumblr_photo_org_height = json.getJSONArray("photos").getJSONObject(0)
-						.getJSONObject("original_size").getInt("height");
-				this.tumblr_photo_org_url = json.getJSONArray("photos").getJSONObject(0).getJSONObject("original_size")
-						.getString("url");
-				this.tumblr_alt_count = json.getJSONArray("photos").getJSONObject(0).getJSONArray("alt_sizes").length();
+				if (this.tumblr_type.toLowerCase().equals("photo")) {
+					this.tumblr_photo_org_width = json.getJSONArray("photos").getJSONObject(0)
+							.getJSONObject("original_size").getInt("width");
+					this.tumblr_photo_org_height = json.getJSONArray("photos").getJSONObject(0)
+							.getJSONObject("original_size").getInt("height");
+					this.tumblr_photo_org_url = json.getJSONArray("photos").getJSONObject(0).getJSONObject("original_size")
+							.getString("url");
+					this.tumblr_alt_count = json.getJSONArray("photos").getJSONObject(0).getJSONArray("alt_sizes").length();
 
-				// Now Create A List Of Alt Sizes
-				for (int i = 0; json.getJSONArray("photos").getJSONObject(0).getJSONArray("alt_sizes")
-						.length() > i; i++) {
-					this.tumblr_photo_alt_widths.add(json.getJSONArray("photos").getJSONObject(0)
-							.getJSONArray("alt_sizes").getJSONObject(i).getInt("width"));
-					this.tumblr_photo_alt_urls.add(json.getJSONArray("photos").getJSONObject(0)
-							.getJSONArray("alt_sizes").getJSONObject(i).getString("url"));
-					this.tumblr_photo_alt_heights.add(json.getJSONArray("photos").getJSONObject(0)
-							.getJSONArray("alt_sizes").getJSONObject(i).getInt("height"));
+					// Now Create A List Of Alt Sizes
+					for (int i = 0; json.getJSONArray("photos").getJSONObject(0).getJSONArray("alt_sizes")
+							.length() > i; i++) {
+						this.tumblr_photo_alt_widths.add(json.getJSONArray("photos").getJSONObject(0)
+								.getJSONArray("alt_sizes").getJSONObject(i).getInt("width"));
+						this.tumblr_photo_alt_urls.add(json.getJSONArray("photos").getJSONObject(0)
+								.getJSONArray("alt_sizes").getJSONObject(i).getString("url"));
+						this.tumblr_photo_alt_heights.add(json.getJSONArray("photos").getJSONObject(0)
+								.getJSONArray("alt_sizes").getJSONObject(i).getInt("height"));
+					}
 				}
 			}
 
 			// Decode If Text Post
 			if (this.tumblr_type.toLowerCase().equals("text")) {
-				this.tumblr_text_title = json.getString("title");
+				if(json.has("title")){
+					this.tumblr_text_title = json.valueToString("title");
+				}
 				this.tumblr_text_body = json.getString("body");
 			}
 

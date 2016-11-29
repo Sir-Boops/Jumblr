@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import java.util.ArrayList;
 import java.util.List;

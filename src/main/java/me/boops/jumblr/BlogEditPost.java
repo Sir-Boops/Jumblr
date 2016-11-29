@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -19,13 +19,46 @@ import org.json.JSONObject;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
-public class BlogDeletePost {
+public class BlogEditPost {
 	
 	// Define private oauth strings
 	private String cust_key;
 	private String cust_sec;
 	private String token;
 	private String token_sec;
+	
+	//Define private settings
+	private String set_state = "";
+	private String set_tags = "";
+	private String set_tweet = "";
+	private String set_date = "";
+	private String set_format = "";
+	private String set_slug = "";
+	
+	//Set the optional settings
+	public void setPostState(String state){
+		this.set_state = state;
+	}
+	
+	public void setPostTags(String tags){
+		this.set_tags = tags;
+	}
+	
+	public void setTweet(String tweet){
+		this.set_tweet = tweet;
+	}
+	
+	public void setDate(String date){
+		this.set_date = date;
+	}
+	
+	public void setFormat(String format){
+		this.set_format = format;
+	}
+	
+	public void setSlug(String slug){
+		this.set_slug = slug;
+	}
 	
 	// Define private HTTP strings
 	private int httprescode;
@@ -44,7 +77,7 @@ public class BlogDeletePost {
 	}
 	
 	// Master call that sets the needed api keys
-	public BlogDeletePost(String cust_key, String cust_sec, String token, String token_sec) {
+	public BlogEditPost(String cust_key, String cust_sec, String token, String token_sec) {
 
 		// Set the required oauth strings
 		this.cust_key = cust_key;
@@ -54,14 +87,14 @@ public class BlogDeletePost {
 
 	}
 	
-	public void deletePost(String blog, int id){
+	public void editPost(String blog, int id){
 		
 		// Define oauth
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
 		consumer.setTokenWithSecret(this.token, this.token_sec);
 				
 		//Create The URL
-		String url = "https://api.tumblr.com/v2/blog/" + blog + "/post/delete";
+		String url = "https://api.tumblr.com/v2/blog/" + blog + "/post/edit";
 		
 		// Setup The Request
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
@@ -70,6 +103,24 @@ public class BlogDeletePost {
 		//Build the post request
 		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 		urlParameters.add(new BasicNameValuePair("id", Integer.toString(id)));
+		if(!this.set_tags.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("tags", this.set_tags));
+		}
+		if(!this.set_tweet.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("tweet", this.set_tweet));
+		}
+		if(!this.set_date.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("date", this.set_date));
+		}
+		if(!this.set_format.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("format", this.set_format));
+		}
+		if(!this.set_slug.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("slug", this.set_slug));
+		}
+		if(!this.set_state.isEmpty()){
+			urlParameters.add(new BasicNameValuePair("state", this.set_state));
+		}
 		
 		//Add the post vars to the request
 		try {
@@ -115,4 +166,5 @@ public class BlogDeletePost {
 		}
 		
 	}
+
 }

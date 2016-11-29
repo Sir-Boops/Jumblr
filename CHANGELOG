@@ -1,3 +1,7 @@
+Jumblr - 1.0.6
+  * Fixed a crash when trying to get a title
+  * Fixed a crash when trying to get a photo
+  
 Jumblr - 1.0.5
   * Removed Source String from decode post
   * Added check for the title string

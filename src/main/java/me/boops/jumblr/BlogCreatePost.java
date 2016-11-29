@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

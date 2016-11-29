@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

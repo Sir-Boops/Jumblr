@@ -1,4 +1,4 @@
-package pw.frgl.jumblr;
+package me.boops.jumblr;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,30 +13,32 @@ import org.json.JSONObject;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
-public class BlogQueue {
-	
+public class BlogLikes {
+
 	// Define private oauth strings
 	private String cust_key;
 	private String cust_sec;
 	private String token;
 	private String token_sec;
-	
-	//Define private post request settings
-	private int set_offset = -1;
-	private int set_limit = -1;
-	private String set_filter = "";
-	
+
 	// Define private HTTP strings
 	private int httprescode;
 
 	// Define JSON dump
 	private String json_dump;
 	
-	//Define posts
-	private JSONArray tumblr_posts;
+	//Define Strings You Can Set
+	private int set_limit = -1;
+	private int set_offset = -1;
+	private long set_before_time = -1;
+	private long set_after_time = -1;
 	
-	//Define Error String
-	private String err = "";
+	//Define private tumblr vars
+	private int tumblr_like_count;
+	private int tumblr_like_res_count;
+	
+	//Define private posts JSONArray
+	private JSONArray tumblr_liked_posts;
 	
 	//Return HTTP code
 	public int getHTTPCode(){
@@ -48,35 +50,22 @@ public class BlogQueue {
 		return this.json_dump;
 	}
 	
-	//Return the JSON of a post to be decoded
-	public String getPost(int post){
-		return this.tumblr_posts.getJSONObject(post).toString();
+	//Return Tumblr Ints
+	public int getTotalLikeCount(){
+		return this.tumblr_like_count;
 	}
 	
-	public int getResPostCount(){
-		return this.tumblr_posts.length();
+	public int getPostLength(){
+		return this.tumblr_like_res_count;
 	}
 	
-	//Set the request settings
-	public void setOffset(int offset){
-		this.set_offset = offset;
+	//Return liked post as a String for the post decoder
+	public String getLikedPost(int post){
+		return this.tumblr_liked_posts.getJSONObject(post).toString();
 	}
-	
-	public void setLimit(int limit){
-		this.set_limit = limit;
-	}
-	
-	public void setFilter(String filter){
-		this.set_filter = filter;
-	}
-	
-	//Return Error
-	public String getError(){
-		return this.err;
-	}
-	
+
 	// Master call that sets the needed api keys
-	public BlogQueue(String cust_key, String cust_sec, String token, String token_sec) {
+	public BlogLikes(String cust_key, String cust_sec, String token, String token_sec) {
 
 		// Set the required oauth strings
 		this.cust_key = cust_key;
@@ -86,30 +75,49 @@ public class BlogQueue {
 
 	}
 	
-	public void getQueue(String blog){
-		
-		//Empty The Error
-		this.err = "";
-		
+	//Set The Optional Settings
+	public void setLimit(int limit){
+		this.set_limit = limit;
+	}
+	
+	public void setOffset(int offset){
+		this.set_offset = offset;
+	}
+	
+	public void setBeforeTime(long before){
+		this.set_before_time = before;
+	}
+	
+	public void setAfterTime(long after){
+		this.set_after_time = after;
+	}
+
+	public void getLikes(String blog) {
+
 		// Define oauth
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
 		consumer.setTokenWithSecret(this.token, this.token_sec);
-				
+		
 		//Create The URL
-		String url = "https://api.tumblr.com/v2/blog/" + blog + "/posts/queue";
+		String url = "https://api.tumblr.com/v2/blog/" + blog + "/likes";
+		
+		//Check if we should add any of the options
+		if(this.set_limit >= 0){
+			url += "?limit=" + this.set_limit;
+		}
 		
 		if(this.set_offset >= 0){
 			url += "?offset=" + this.set_offset;
 		}
 		
-		if(this.set_limit >= 0){
-			url += "?limit=" + this.set_offset;
+		if(this.set_before_time >= 0){
+			url += "?before=" + this.set_before_time;
 		}
 		
-		if(!this.set_filter.isEmpty()){
-			url += "?filter=" + this.set_filter;
+		if(this.set_after_time >= 0){
+			url += "?after" + this.set_after_time;
 		}
-		
+
 		// Setup The Request
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
 		HttpGet get = new HttpGet(url);
@@ -129,24 +137,17 @@ public class BlogQueue {
 
 				//Now parse the res
 				String meta = new BasicResponseHandler().handleResponse(res);
+				JSONObject json = new JSONObject(meta);
 				
-				//Check if meta is JSON
-				if(meta.startsWith("{")){
-					
-					//Catch the error if their is one
-					JSONObject json = new JSONObject(meta);
-						
-					//Set the json array off to the private string
-					this.tumblr_posts = json.getJSONObject("response").getJSONArray("posts");
-						
-					//Dump Json
-					this.json_dump = json.toString();
-					
-				} else {
-					
-					//Meta Error
-					this.err = "Meta Error";
-				}
+				//Set the two liked counts
+				this.tumblr_like_count = json.getJSONObject("response").getInt("liked_count");
+				this.tumblr_like_res_count = json.getJSONObject("response").getJSONArray("liked_posts").length();
+				
+				//Set JSONArray
+				this.tumblr_liked_posts = json.getJSONObject("response").getJSONArray("liked_posts");
+				
+				//Dump Json
+				this.json_dump = json.toString();
 
 			} else {
 
@@ -162,7 +163,7 @@ public class BlogQueue {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
