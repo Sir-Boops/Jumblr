@@ -1,5 +1,6 @@
 Jumblr - 1.0.7
   * Fixed a crashing bug when tumblr is slow
+  * Added a request timeout in BlogPosts
 
 Jumblr - 1.0.6
   * Fixed a crash when trying to get a title

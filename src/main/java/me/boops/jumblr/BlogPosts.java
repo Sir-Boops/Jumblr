@@ -3,6 +3,7 @@ package me.boops.jumblr;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -156,9 +157,14 @@ public class BlogPosts {
 			url += "?filter=" + this.set_filter;
 		}
 		
+		//Setup the request config
+		int TimeOutMilli = (10 * 1000);
+		RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(TimeOutMilli).setSocketTimeout(TimeOutMilli).setConnectTimeout(TimeOutMilli).build();
+		
 		// Setup The Request
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
 		HttpGet get = new HttpGet(url);
+		get.setConfig(requestConfig);
 
 		// Sign the reuqest
 		try {
