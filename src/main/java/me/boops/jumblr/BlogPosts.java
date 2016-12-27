@@ -197,7 +197,7 @@ public class BlogPosts {
 				this.httprescode = 404;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		
 	}
