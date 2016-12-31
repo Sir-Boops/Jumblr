@@ -1,4 +1,4 @@
-# Jumblr
+# Jumblr ![build status](https://mvn.frgl.pw/status/jumblr)
 
 This projects goal is to be a better wrapper for Tumblrs API
 
