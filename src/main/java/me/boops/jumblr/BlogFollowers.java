@@ -23,8 +23,6 @@ public class BlogFollowers {
 	private String token;
 	private String token_sec;
 
-	// Optional call settings
-
 	// Define private HTTP strings
 	private int httprescode;
 
