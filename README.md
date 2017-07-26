@@ -1,4 +1,4 @@
-# Jumblr ![build status](https://builder.frgl.pw/job/Jumblr/badge/icon)
+# Jumblr ![build status](https://mvn.sergal.org/jenkins/job/Jumblr/badge/icon)
 
 This projects goal is to be a better wrapper for Tumblrs API
 
