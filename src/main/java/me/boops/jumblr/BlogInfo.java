@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -264,7 +265,9 @@ public class BlogInfo {
 		// Setup The Request
 		String url = "https://api.tumblr.com/v2/blog/" + blog + "/info";
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+		RequestConfig reqConfig = RequestConfig.custom().setSocketTimeout(10*1000).setConnectTimeout(10*1000).setConnectionRequestTimeout(10*1000).build();
 		HttpGet get = new HttpGet(url);
+		get.setConfig(reqConfig);
 
 		// Sign the reuqest
 		try {

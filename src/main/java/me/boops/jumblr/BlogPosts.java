@@ -157,14 +157,11 @@ public class BlogPosts {
 			url += "?filter=" + this.set_filter;
 		}
 		
-		//Setup the request config
-		int TimeOutMilli = (10 * 1000);
-		RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(TimeOutMilli).setSocketTimeout(TimeOutMilli).setConnectTimeout(TimeOutMilli).build();
-		
 		// Setup The Request
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
+		RequestConfig reqConfig = RequestConfig.custom().setSocketTimeout(10*1000).setConnectTimeout(10*1000).setConnectionRequestTimeout(10*1000).build();
 		HttpGet get = new HttpGet(url);
-		get.setConfig(requestConfig);
+		get.setConfig(reqConfig);
 
 		// Sign the reuqest
 		try {
