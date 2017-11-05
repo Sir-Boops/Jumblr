@@ -118,43 +118,43 @@ public class BlogPosts {
 	public void getPosts(String blog){
 		
 		// Define oauth
-		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
-		consumer.setTokenWithSecret(this.token, this.token_sec);
+		//OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
+		//consumer.setTokenWithSecret(this.token, this.token_sec);
 				
 		//Create The URL
-		String url = "https://api.tumblr.com/v2/blog/" + blog + "/posts";
+		String url = "https://api.tumblr.com/v2/blog/" + blog + "/posts?api_key=" + this.cust_key;
 		
 		//Add options if they are set
 		if(!this.set_post_type.isEmpty()){
-			url += "?type=" + this.set_post_type;
+			url += "&?type=" + this.set_post_type;
 		}
 		
 		if(this.set_post_id >= 0){
-			url += "?id=" + this.set_post_id;
+			url += "&id=" + this.set_post_id;
 		}
 		
 		if(!this.set_post_tag.isEmpty()){
-			url += "?tag=" + this.set_post_tag;
+			url += "&tag=" + this.set_post_tag;
 		}
 		
 		if(this.set_limit >= 0){
-			url += "?limit=" + this.set_limit;
+			url += "&limit=" + this.set_limit;
 		}
 		
 		if(this.set_offset >= 0){
-			url += "?offset=" + this.set_offset;
+			url += "&offset=" + this.set_offset;
 		}
 		
 		if(this.set_reblog_info){
-			url += "?reblog_info=true";
+			url += "&reblog_info=true";
 		}
 		
 		if(this.set_notes_info){
-			url += "?notes_info=true";
+			url += "&notes_info=true";
 		}
 		
 		if(!this.set_filter.isEmpty()){
-			url += "?filter=" + this.set_filter;
+			url += "&filter=" + this.set_filter;
 		}
 		
 		// Setup The Request
@@ -165,7 +165,7 @@ public class BlogPosts {
 
 		// Sign the reuqest
 		try {
-			consumer.sign(get);
+			//consumer.sign(get);
 
 			// Send the request
 			HttpResponse res = client.execute(get);
