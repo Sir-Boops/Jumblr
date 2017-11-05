@@ -8,8 +8,8 @@
 
     <distributionManagement>
         <repository>
-            <id>pw.frgl.cdn</id>
-            <url>https://cdn.frgl.pw/mvn</url>
+            <id>org.sergal.mvn</id>
+            <url>https://mvn.sergal.org/mvn</url>
         </repository>
     </distributionManagement>
 
