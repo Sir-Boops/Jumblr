@@ -31,7 +31,7 @@ public class BlogDash {
 	// Optional strings
 	private int requestLimit = 20;
 	private int requestOffset = 0;
-	private String requestType = null;
+	private String requestType = "";
 	private long reuqestSince = 0;
 	private boolean requestReblog = false;
 	private boolean requestNotes = false;
@@ -110,20 +110,20 @@ public class BlogDash {
 			get.setConfig(reqConfig);
 			
 			//Add options if they are set
-			if(this.requestLimit > 0){
+			if(this.requestLimit >= 1){
 				url += "?limit=" + this.requestLimit;
 			}
 			
 			if(this.requestOffset >= 0){
-				url += "&id=" + this.requestOffset;
+				url += "&offset=" + this.requestOffset;
 			}
 			
 			if(!this.requestType.isEmpty()){
-				url += "&tag=" + this.requestType;
+				url += "&type=" + this.requestType;
 			}
 			
 			if(this.reuqestSince >= 0){
-				url += "&offset=" + this.reuqestSince;
+				url += "&since_id=" + this.reuqestSince;
 			}
 			
 			if(this.requestReblog){
