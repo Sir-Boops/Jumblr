@@ -1,13 +1,20 @@
 package me.boops.jumblr;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import oauth.signpost.OAuthConsumer;
@@ -52,32 +59,42 @@ public class BlogLike {
 
 	}
 	
-	public void getLikes(long ID, String key) {
+	public void likePost(long ID, String key) {
 
 		// Define oauth
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(this.cust_key, this.cust_sec);
 		consumer.setTokenWithSecret(this.token, this.token_sec);
 		
 		//Create The URL
-		String url = "https://api.tumblr.com/v2/blog/user/like";
+		String url = "https://api.tumblr.com/v2/user/like";
+		
+		//Build the post request
+		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 		
 		this.postID = ID;
 		this.postKey = key;
 		
 		//Check if we should add any of the options
 		if(this.postID >= 0){
-			url += "?id=" + this.postID;
+			urlParameters.add(new BasicNameValuePair("id", String.valueOf(this.postID)));
 		}
 		
 		if(!this.postKey.isEmpty()){
-			url += "&reblog_key=" + this.postKey;
+			urlParameters.add(new BasicNameValuePair("reblog_key", this.postKey));
 		}
 
 		// Setup The Request
 		HttpClient client = HttpClients.custom().setSSLHostnameVerifier(new DefaultHostnameVerifier()).build();
 		RequestConfig reqConfig = RequestConfig.custom().setSocketTimeout(10*1000).setConnectTimeout(10*1000).setConnectionRequestTimeout(10*1000).build();
-		HttpGet get = new HttpGet(url);
+		HttpPost get = new HttpPost(url);
 		get.setConfig(reqConfig);
+		
+		//Add the post vars to the request
+		try {
+			get.setEntity(new UrlEncodedFormEntity(urlParameters));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 
 		// Sign the reuqest
 		try {
